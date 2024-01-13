@@ -1,0 +1,98 @@
+name: Create Foundry Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  # Release the packet
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # Checkout to latest commit
+      - name: Checkout to Latest Commit
+        uses: actions/checkout@v3
+
+      # Check if tag already exists
+      - name: Verify if tag is not duplicate
+        id: check-tag
+        run: |
+          if git rev-parse "${{ github.action_ref }}" >/dev/null 2>&1; then
+            echo "Tag already exists"
+            exit 1
+          fi
+
+      # Get the module version and title
+      - name: Get Module Version
+        run: |
+          VERSION=$(jq -r '.version' module.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          TITLE=$(jq -r '.title' module.json)
+          echo "TITLE=$TITLE" >> $GITHUB_ENV
+
+      # Check if tag version and 'module.json' version are the same
+      - name: Check if 'module.json' is valid
+        run: |
+          if [ "${{ env.VERSION }}" != "${{ github.ref_name }}" ]; then
+            echo "Invalid 'module.json' - version difference"
+            echo "'module.json' version is '${{ env.VERSION }}'"
+            echo "tag version is '${{ github.ref_name }}'"
+            exit 1
+          fi
+
+      # Get the env values from the modified module.json
+      - name: Get Module Information
+        run: |
+          MODULE=$(jq -r '.id' module.json)
+          echo "MODULE=$MODULE" >> $GITHUB_ENV
+          MINIMUM=$(jq -r '.compatibility.minimum' module.json)
+          echo "MINIMUM=$MINIMUM" >> $GITHUB_ENV
+          VERIFIED=$(jq -r '.compatibility.verified' module.json)
+          echo "VERIFIED=$VERIFIED" >> $GITHUB_ENV
+
+          echo "MANIFEST=https://github.com/${{ github.repository }}/releases/download/${{ env.VERSION }}/module.json" >> $GITHUB_ENV
+          echo "CHANGELOG=https://github.com/${{ github.repository }}/releases/tag/${{ env.VERSION }}" >> $GITHUB_ENV
+
+      # Zip the files into module.zip
+      - name: Package Release
+        run: zip -r ./module.zip module.json LICENSE module/
+
+      # Generate notes
+      - name: Generate Changelog
+        uses: CSchoel/release-notes-from-changelog@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: ${{ env.VERSION }}
+          begin-pattern: '/^## Version ${{ env.VERSION }}/'
+          end-pattern: '/^## /'
+
+      # Create the release
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "module.zip,module.json"
+          bodyfile: RELEASE.md
+
+      # Release it at FoundryVTT
+      - name: Release Module to FoundryVTT
+        run: |
+          curl -X POST "https://api.foundryvtt.com/_api/packages/release_version/" \
+          -H "Content-Type: application/json" \
+          -H "Authorization: ${{ secrets.FOUNDRY_RELEASE_TOKEN }}" \
+          -d '{
+            "id": "${{ env.MODULE }}",
+            "dry-run": true,
+            "release": {
+              "version": "${{ env.VERSION }}",
+              "manifest": "${{ env.MANIFEST }}",
+              "notes": "${{ env.CHANGELOG }}",
+              "compatibility": {
+                "minimum": "${{ env.MINIMUM }}",
+                "verified": "${{ env.VERIFIED }}"
+              }
+            }
+          }'
