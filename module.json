@@ -32,7 +32,20 @@
     "download": "https://github.com/RPG-Made-Simple/FVTT-ChromaticCanvas/releases/latest/download/module.zip",
     "readme": "https://github.com/RPG-Made-Simple/FVTT-ChromaticCanvas/blob/main/README.md",
     "changelog": "https://github.com/RPG-Made-Simple/FVTT-ChromaticCanvas/blob/main/CHANGELOG.md",
-    "relationships": {},
+    "relationships": {
+        "requires": [
+            {
+                "id": "debugger",
+                "type": "module",
+                "compatibility": {}
+            },
+            {
+                "id": "toolbox",
+                "type": "module",
+                "compatibility": {}
+            }
+        ]
+    },
     "esmodules": [
         "./module/scripts/module.js"
     ]
