@@ -14,11 +14,11 @@
 // ? created from 0 but using Kandashi's work as reference :D.
 import { Constants as C } from "./constants.js";
 
-export class ChromaticCanvas extends InteractionLayer {
+export class ChromaticCanvasLayer extends InteractionLayer {
     constructor() {
         super();
 
-        if (Gamepad.release.generation == 10) {
+        if (game.release.generation == 10) {
             // Debug
             C.D.info('Detected FoundryVTT 10, making compatibility changes...');
 
@@ -43,7 +43,7 @@ export class ChromaticCanvas extends InteractionLayer {
         // Check if arguments are valid
         if (!Toolbox.check(intensity, 'number')) {
             // Debug
-            C.D.error('"intensity" is invalid');
+            C.D.error('"intensity" is missing');
 
             return;
         }
@@ -55,7 +55,7 @@ export class ChromaticCanvas extends InteractionLayer {
         }
         if (!Toolbox.check(iterations, 'number')) {
             // Debug
-            C.D.error('"iterations" is empty');
+            C.D.error('"iterations" is missing');
 
             return;
         }

@@ -2,7 +2,7 @@
     "id": "chromatic-canvas",
     "title": "🎴 Chromatic Canvas (Library)",
     "description": "Library that adds special effects to the canvas",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "library": true,
     "authors": [
         {
@@ -32,20 +32,7 @@
     "download": "https://github.com/RPG-Made-Simple/FVTT-ChromaticCanvas/releases/latest/download/module.zip",
     "readme": "https://github.com/RPG-Made-Simple/FVTT-ChromaticCanvas/blob/main/README.md",
     "changelog": "https://github.com/RPG-Made-Simple/FVTT-ChromaticCanvas/blob/main/CHANGELOG.md",
-    "relationships": {
-        "requires": [
-            {
-                "id": "debugger",
-                "type": "module",
-                "compatibility": {}
-            },
-            {
-                "id": "toolbox",
-                "type": "module",
-                "compatibility": {}
-            }
-        ]
-    },
+    "relationships": {},
     "esmodules": [
         "./module/scripts/module.js"
     ]
