@@ -21,7 +21,9 @@ Hooks.once('init', () => {
 
         // Setup the API and methods
         window['ChromaticCanvas'] = {
-            screenShake: ChromaticCanvasLayer.screenShake,
+            screenShake: (intensity = 1, duration = 500, iterations = 1) => {
+                C.SOCKET.executeForEveryone('screenShake', intensity, duration, iterations);
+            }
         }
 
         Hooks.call('chromatic-canvas.ready');
@@ -41,4 +43,39 @@ Hooks.once('init', () => {
         group: 'interface',
         layerClass: ChromaticCanvasLayer,
     }
+
+    Hooks.on('getSceneControlButtons', (controls) => {
+        // Setup listener for the module tools
+        if (!canvas.scene) return;
+
+        const screenShakeTool = {
+            name: 'screen-shake',
+            title: game.i18n.localize('chromatic-canvas.tool.screen-shake.title'),
+            icon: 'fas fa-waveform',
+            onClick: async () => {
+                C.SOCKET.executeForEveryone('screenShake', 1, 500, 1);
+            },
+            button: true
+        }
+
+        controls.push({
+            name: C.ID,
+            title: C.NAME_FLAT,
+            layer: 'chromaticCanvas',
+            icon: 'fas fa-panorama',
+            visible: game.user.isGM,
+            tools: [
+                screenShakeTool
+            ]
+        });
+    });
+});
+
+// Setup the socket
+Hooks.once('socketlib.ready', () =>
+{
+    C.SOCKET = socketlib.registerModule(C.ID);
+
+    // Tags
+    C.SOCKET.register('screenShake', ChromaticCanvasLayer.screenShake);
 })

@@ -1,2 +1,9 @@
 {
+    "chromatic-canvas": {
+        "tool": {
+            "screen-shake": {
+                "title": "Screen Shake"
+            }
+        }
+    }
 }

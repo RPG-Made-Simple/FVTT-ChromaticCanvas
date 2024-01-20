@@ -13,5 +13,6 @@ export class Constants {
     static ID = 'chromatic-canvas';
     static NAME_FLAT = 'Chromatic Canvas';
     static NAME = `🎴 ${Constants.NAME_FLAT}`;
+    static SOCKET;
     static D;
 }

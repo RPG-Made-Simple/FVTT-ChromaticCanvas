@@ -1,4 +1,5 @@
-!> **All** methods here do not replicate to users, they are executed **locally**
+> **All** methods here are replicated to all the users!
+
 ## Screen Shake
 ```js
 ChromaticCanvas.screenShake(intensity: Number, duration: Number,
