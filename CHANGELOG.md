@@ -1,5 +1,13 @@
 # 🎴 Chromatic Canvas Changelog
 
+## Version 1.1.0
+
+- *Internal* - Added [socketlib](https://foundryvtt.com/packages/socketlib) as a dependency.
+- *Internal* - Added replication to effects.
+- *Interface* - Added an interface tool to execute the effects.
+- *API* - [`screenShake()`](https://docs.rpgmadesimple.com/FVTT-ChromaticCanvas/#/apiReference?id=screen-shake) now replicates to all users.
+- *Docs* - Removed warning about effects working only locally.
+
 ## Version 1.0.1
 
 - *Internal* - Added proper `InteractionLayer` for the module.
