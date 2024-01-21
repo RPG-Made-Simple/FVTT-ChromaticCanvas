@@ -1,8 +1,17 @@
 {
     "chromatic-canvas": {
         "tool": {
-            "screen-shake": {
-                "title": "Screen Shake"
+            "shake": {
+                "title": "Shake"
+            },
+            "pulsate": {
+                "title": "Pulsate"
+            },
+            "spin": {
+                "title": "Spin"
+            },
+            "color-fringing": {
+                "title": "Color Fringing"
             }
         }
     }

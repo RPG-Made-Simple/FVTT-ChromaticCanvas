@@ -10,6 +10,7 @@
 // ? Chromatic Canvas is a simple library that exposes a API with methods to
 // ? apply special effects to the canvas.
 import { Constants as C } from "./constants.js";
+import { ChromaticCanvas } from "./chromaticCanvas.js";
 import { ChromaticCanvasLayer } from "./chromaticCanvasLayer.js";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -19,11 +20,30 @@ Hooks.once('init', () => {
     Hooks.once('toolbox.ready', () => {
         Toolbox.showcaseModule(C.NAME_FLAT);
 
+        ChromaticCanvas.initialize();
+
         // Setup the API and methods
         window['ChromaticCanvas'] = {
-            screenShake: (intensity = 1, duration = 500, iterations = 1) => {
-                C.SOCKET.executeForEveryone('screenShake', intensity, duration, iterations);
-            }
+            // Deprecated
+            screenShake: (options) => {
+                ChromaticCanvas.dispatch('shake', options);
+            },
+
+            shake: (options) => {
+                ChromaticCanvas.dispatch('shake', options);
+            },
+
+            pulsate: (options) => {
+                ChromaticCanvas.dispatch('pulsate', options);
+            },
+
+            spin: (options) => {
+                ChromaticCanvas.dispatch('spin', options);
+            },
+
+            colorFringing: (options) => {
+                ChromaticCanvas.dispatch('colorFringing', options);
+            },
         }
 
         Hooks.call('chromatic-canvas.ready');
@@ -48,14 +68,70 @@ Hooks.once('init', () => {
         // Setup listener for the module tools
         if (!canvas.scene) return;
 
-        const screenShakeTool = {
-            name: 'screen-shake',
-            title: game.i18n.localize('chromatic-canvas.tool.screen-shake.title'),
+        console.log(controls);
+
+        const shakeTool = {
+            name: 'shake',
+            title: game.i18n.localize('chromatic-canvas.tool.shake.title'),
             icon: 'fas fa-waveform',
             onClick: async () => {
-                C.SOCKET.executeForEveryone('screenShake', 1, 500, 1);
+                ChromaticCanvas.dispatch('shake', {
+                    intensity: 1,
+                    duration: 500,
+                    iterations: 1,
+                    target: 'board',
+                    everyone: true,
+                });
             },
-            button: true
+            button: true,
+        }
+
+        const pulsateTool = {
+            name: 'pulsate',
+            title: game.i18n.localize('chromatic-canvas.tool.pulsate.title'),
+            icon: 'fas fa-wave-pulse',
+            onClick: async () => {
+                ChromaticCanvas.dispatch('pulsate', {
+                    intensity: 1,
+                    duration: 500,
+                    iterations: 3,
+                    target: 'board',
+                    everyone: true,
+                })
+            },
+            button: true,
+        }
+
+        const spinTool = {
+            name: 'spin',
+            title: game.i18n.localize('chromatic-canvas.tool.spin.title'),
+            icon: 'fas fa-rotate-right',
+            onClick: async () => {
+                ChromaticCanvas.dispatch('spin', {
+                    intensity: 1,
+                    duration: 500,
+                    iterations: 1,
+                    target: 'board',
+                    everyone: true,
+                })
+            },
+            button: true,
+        }
+
+        const colorFringingTool = {
+            name: 'color-fringing',
+            title: game.i18n.localize('chromatic-canvas.tool.color-fringing.title'),
+            icon: 'fas fa-transporter-5',
+            onClick: async () => {
+                ChromaticCanvas.dispatch('colorFringing', {
+                    intensity: 1,
+                    duration: 500,
+                    iterations: 1,
+                    target: 'board',
+                    everyone: true,
+                })
+            },
+            button: true,
         }
 
         controls.push({
@@ -65,7 +141,10 @@ Hooks.once('init', () => {
             icon: 'fas fa-panorama',
             visible: game.user.isGM,
             tools: [
-                screenShakeTool
+                shakeTool,
+                pulsateTool,
+                spinTool,
+                colorFringingTool,
             ]
         });
     });
@@ -76,6 +155,8 @@ Hooks.once('socketlib.ready', () =>
 {
     C.SOCKET = socketlib.registerModule(C.ID);
 
-    // Tags
-    C.SOCKET.register('screenShake', ChromaticCanvasLayer.screenShake);
+    C.SOCKET.register('shake', ChromaticCanvasLayer.shake);
+    C.SOCKET.register('pulsate', ChromaticCanvasLayer.pulsate);
+    C.SOCKET.register('spin', ChromaticCanvasLayer.spin);
+    C.SOCKET.register('colorFringing', ChromaticCanvasLayer.colorFringing);
 })
