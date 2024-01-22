@@ -1,12 +1,21 @@
 > **All** methods here are replicated to all the users!
 
+# Options
+Before calling the API you shoul know that all methods utilize the same type of argument, an `Object` called `options`, which looks like this (includes default values):
+```js
+const defaultOptions = {
+  intensity: 1, // Effect strenght
+  duration: 500, // How much time it lasts (ms)
+  iterations: 1, // How many times will it repeat. Can also be set to 'Infinity'
+  target: 'board', // The HTML Id of the target Element
+  everyone: true, // Will it be played to everyone?
+  users: [game.user], // If everyone is not true, replicate to these users
+};
+```
+
 ## Shake
 ```js
-ChromaticCanvas.shake(
-  intensity: Number = 1,
-  duration: Number = 500,
-  iterations: Number = 1,
-  target: Element = document.getElementById('board')) -> void
+ChromaticCanvas.shake(options: Object = defaultOptions) -> void
 ```
 ```js
 // Example 1
@@ -15,23 +24,53 @@ ChromaticCanvas.shake();
 ```
 ```js
 // Example 2
-ChromaticCanvas.shake(1, 500, 1, document.getElementById('ui-bottom'));
+ChromaticCanvas.shake({
+    intensity: 1,
+    duration: 500,
+    iterations: 1,
+    target: 'ui-bottom',
+  });
 // Wil shake the hotbar
 ```
-Will shake the `target` based on `intensity`, `duration` (ms) and `iterations`.
 
 ## Pulsate
 ```js
-ChromaticCanvas.pulsate(
-  intensity: Number = 1,
-  duration: Number = 500,
-  iterations: Number = 3,
-  target: Element = document.getElementById('board')) -> void
+ChromaticCanvas.pulsate(options: Object = defaultOptions) -> void
 ```
 ```js
 // Example
-ChromaticCanvas.pulsate(1, 1500, 1);
+ChromaticCanvas.pulsate({
+  intensity: 1,
+  duration: 1500,
+  iterations: 1,
+});
 // Will do a long and slow pulsation
 ```
-Will pulsate the `target` based on `intensity`, `duration` (ms) and `iterations`.
 
+## Spin
+```js
+ChromaticCanvas.spin(options: Object = defaultOptions) -> void
+```
+```js
+// Example
+ChromaticCanvas.spin({
+  intesity: 1,
+  duration: 10000,
+  iterations: Infinity,
+});
+// Will rotate the canvas forever (or until you reload)
+```
+
+## Hyper Color
+```js
+ChromaticCanvas.hyperColor(options: Object = defaultOptions) -> void
+```
+```js
+// Example
+ChromaticCanvas.hyperColor({
+  intesity: 1,
+  duration: 100,
+  iterations: 500,
+});
+// Will apply a fast hyper color effect that will last for some time
+```

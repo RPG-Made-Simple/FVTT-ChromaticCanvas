@@ -41,8 +41,8 @@ Hooks.once('init', () => {
                 ChromaticCanvas.dispatch('spin', options);
             },
 
-            colorFringing: (options) => {
-                ChromaticCanvas.dispatch('colorFringing', options);
+            hyperColor: (options) => {
+                ChromaticCanvas.dispatch('hyperColor', options);
             },
         }
 
@@ -64,11 +64,9 @@ Hooks.once('init', () => {
         layerClass: ChromaticCanvasLayer,
     }
 
+    // Setup listener for the module tools
     Hooks.on('getSceneControlButtons', (controls) => {
-        // Setup listener for the module tools
         if (!canvas.scene) return;
-
-        console.log(controls);
 
         const shakeTool = {
             name: 'shake',
@@ -119,14 +117,14 @@ Hooks.once('init', () => {
         }
 
         const colorFringingTool = {
-            name: 'color-fringing',
-            title: game.i18n.localize('chromatic-canvas.tool.color-fringing.title'),
-            icon: 'fas fa-transporter-5',
+            name: 'hyper-color',
+            title: game.i18n.localize('chromatic-canvas.tool.hyper-color.title'),
+            icon: 'fas fa-arrows-to-eye',
             onClick: async () => {
-                ChromaticCanvas.dispatch('colorFringing', {
+                ChromaticCanvas.dispatch('hyperColor', {
                     intensity: 1,
-                    duration: 500,
-                    iterations: 1,
+                    duration: 1000,
+                    iterations: 10,
                     target: 'board',
                     everyone: true,
                 })
@@ -158,5 +156,5 @@ Hooks.once('socketlib.ready', () =>
     C.SOCKET.register('shake', ChromaticCanvasLayer.shake);
     C.SOCKET.register('pulsate', ChromaticCanvasLayer.pulsate);
     C.SOCKET.register('spin', ChromaticCanvasLayer.spin);
-    C.SOCKET.register('colorFringing', ChromaticCanvasLayer.colorFringing);
+    C.SOCKET.register('hyperColor', ChromaticCanvasLayer.hyperColor);
 })

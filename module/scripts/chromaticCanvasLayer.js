@@ -98,15 +98,16 @@ export class ChromaticCanvasLayer extends InteractionLayer {
         ], {
             duration: options.duration / options.intensity,
             iterations: options.iterations,
+            ease: "ease"
         });
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Applies color fringing to the target
+    // Applies hyper coloring to the target
     ////////////////////////////////////////////////////////////////////////////
-    static colorFringing(options) {
+    static hyperColor(options) {
         // Debug
-        C.D.info('ChromaticCanvasLayer.colorFringing()');
+        C.D.info('ChromaticCanvasLayer.hyperColor()');
 
         const a = 1 * options.intensity;
         const b = 2 * options.intensity;

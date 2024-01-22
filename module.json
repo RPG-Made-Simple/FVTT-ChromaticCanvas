@@ -2,7 +2,7 @@
     "id": "chromatic-canvas",
     "title": "🎴 Chromatic Canvas (Library)",
     "description": "Library that adds special effects to the canvas",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "library": true,
     "authors": [
         {

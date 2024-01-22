@@ -3,11 +3,13 @@
 ## Version 1.2.0
 
 - *Internal* - Removed redundant argument checks.
-- *Internal* - Effects now support any HTML `Element` (note that some elements do not work and I have no idea why).
+- *Internal* - Effects now support any HTML `Element` that has an `id`. (note that some elements do not work and I have no idea why)
 - *API* - Methods now have an `options` argument instead of many different arguments.
 - *API* - Renamed `screenShake()` to `shake()`.
 - *Effect* - Added [`pulsate()`](https://docs.rpgmadesimple.com/FVTT-ChromaticCanvas/#/apiReference?id=pulsate).
 - *Effect* - Added [`spin()`](https://docs.rpgmadesimple.com/FVTT-ChromaticCanvas/#/apiReference?id=spin).
+- *Effect* - Added [`hyperColor()`](https://docs.rpgmadesimple.com/FVTT-ChromaticCanvas/#/apiReference?id=hyper-color).
+- *Docs* - Updated to reflect the new **API** standards of the module.
 
 ## Version 1.1.0
 
