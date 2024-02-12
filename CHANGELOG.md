@@ -1,5 +1,10 @@
 # 🎴 Chromatic Canvas Changelog
 
+## Version 1.3.0
+
+- *Internak* - Removed `module/branding/title.png` since it was a duplicate of `branding/title.png`
+- *Internal* - Changed indentation from `4` spaces to `2`.
+
 ## Version 1.2.0
 
 - *Internal* - Removed redundant argument checks.

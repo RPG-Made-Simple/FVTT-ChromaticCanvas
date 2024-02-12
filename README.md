@@ -1,13 +1,13 @@
 <a href="https://foundryvtt.com/packages/chromatic-canvas">
-    <p align="center">
-        <img src="https://raw.githubusercontent.com/RPG-Made-Simple/FVTT-ChromaticCanvas/main/branding/title.png" alt="Chromatic Canvas Title">
-    </p>
+  <p align="center">
+    <img src="https://raw.githubusercontent.com/RPG-Made-Simple/FVTT-ChromaticCanvas/main/branding/title.png" alt="Chromatic Canvas Title">
+  </p>
 </a>
 
 <p align="center">
-    <a href="https://discord.gg/RAgPXB4zG7">
-        <img src="https://discord.com/api/guilds/1071251491375042661/widget.png?style=shield"/>
-    </a>
+  <a href="https://discord.gg/RAgPXB4zG7">
+    <img src="https://discord.com/api/guilds/1071251491375042661/widget.png?style=shield"/>
+  </a>
 </p>
 
 A FoundryVTT library that adds special effects to the canvas.

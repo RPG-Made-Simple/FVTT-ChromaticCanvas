@@ -10,9 +10,9 @@
 // ? Here are all the constants used by Chromatic Canvas, all static values are
 // ? and must be here.
 export class Constants {
-    static ID = 'chromatic-canvas';
-    static NAME_FLAT = 'Chromatic Canvas';
-    static NAME = `🎴 ${Constants.NAME_FLAT}`;
-    static SOCKET;
-    static D;
+  static ID = 'chromatic-canvas';
+  static NAME_FLAT = 'Chromatic Canvas';
+  static NAME = `🎴 ${Constants.NAME_FLAT}`;
+  static SOCKET;
+  static D;
 }
