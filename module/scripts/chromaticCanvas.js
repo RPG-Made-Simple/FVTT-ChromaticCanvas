@@ -8,14 +8,31 @@
 //                                                              By ZotyDev    //
 ////////////////////////////////////////////////////////////////////////////////
 // ? Main module class.
+import anime from "../dependencies/anime.es.js";
 import { Constants as C } from "./constants.js";
+import { EffectsDatabase } from "./effectsDatabase.js";
 
 export class ChromaticCanvas {
+  static ActiveEffects = {};
+  static StarredEffects = new Set();
+
   ////////////////////////////////////////////////////////////////////////////
   // Initializes the module
   ////////////////////////////////////////////////////////////////////////////
   static initialize() {
+    // Get currently set effects
+    const activeEffects = canvas.scene?.getFlag(C.ID, 'effects') ?? {};
+    this.ActiveEffects = activeEffects;
 
+    // Initialize and insert all the filters
+    let filters = [];
+    for (const [key, value] of Object.entries(EffectsDatabase)) {
+      filters.push(value);
+    }
+    game.canvas.stage.filters = filters;
+    game.canvas.app.ticker.add(ChromaticCanvas.tick, this);
+
+    window['animejs'] = anime;
   }
 
   ////////////////////////////////////////////////////////////////////////////
@@ -47,6 +64,13 @@ export class ChromaticCanvas {
         C.SOCKET.executeAsUser(effect, user.id, relevantOptions);
       }
     }
+  }
 
+  static tick() {
+    for (const [key, value] of Object.entries(EffectsDatabase)) {
+      if (value.enabled) {
+        value.step();
+      }
+    }
   }
 }

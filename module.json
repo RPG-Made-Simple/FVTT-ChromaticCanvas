@@ -54,5 +54,11 @@
   "socket": true,
   "esmodules": [
     "./module/scripts/module.js"
+  ],
+  "scripts": [
+    "./module/dependencies/pixi-filters.min.js"
+  ],
+  "styles": [
+    "./module/styles/canvasEffects.css"
   ]
 }

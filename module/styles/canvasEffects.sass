@@ -1,0 +1,283 @@
+@font-face
+  font-family: 'Inter'
+  src: url('../fonts/Inter-VariableFont_slnt,wght.ttf') format('truetype')
+
+$color-red: #ff0000
+$color-green: #00ff00
+$purple-color: rgb(170, 105, 212)
+$primary-color: #D0C39B
+
+$color-background: #00000033
+$color-border: #00000080
+$color-text: #ffffff
+$color-star-off: #646464
+$color-star-on: #ffdd88
+
+@mixin modern
+  background: unset !important
+
+@mixin default()
+  background: unset !important
+  background: $color-background !important
+  border-radius: 5px !important
+  border: 1px solid $color-border !important
+  filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.5))
+
+// Chromatic Canvas
+.chromatic-canvas
+  color: $color-text
+  .header
+
+  .body
+    .effect
+      @include default()
+      margin: 10px
+      .header
+        @include default()
+        border-left: none !important
+        border-top: none !important
+        border-right: none !important
+        border-bottom-left-radius: 0px !important
+        border-bottom-right-radius: 0px !important
+        height: 30px
+        display: grid
+        grid-template-rows: 1fr
+        grid-template-columns: auto auto 1fr auto
+        grid-template-areas: "a b c d"
+        align-items: center
+        grid-auto-flow: column
+        direction: ltr
+        justify-items: start
+        justify-content: start
+
+        .expand
+          width: 15px
+          margin-left: 5px
+
+        span
+          margin-left: 10px
+          font-family: Inter
+          font-weight: 700
+          font-size: 16px
+
+        .star
+          margin-right: 10px
+          font-size: 18px
+          grid-area: d
+
+          &.on
+            color: $color-star-on
+            scale: 1.15
+
+          &.off
+            color: $color-star-off
+            scale: 1.0
+
+      .content
+        margin: 5px
+        display: flex
+        flex-direction: column
+        flex-wrap: nowrap
+        align-items: stretch
+        transition: all 100ms
+
+        &.off
+          height: 0px
+          margin: 0px
+          overflow-y: hidden
+
+        &.on
+          height: auto
+
+        .attribute
+          margin-top: 5px
+          margin-bottom: 5px
+
+          input[type=checkbox].toggle
+            opacity: 0
+            position: absolute
+            cursor: pointer
+            left: -9000px
+            top: -9000px
+
+            & + label
+              cursor: pointer
+              position: relative
+              display: flex
+              align-items: center
+
+              &::before
+                content: ""
+                width: 2.5em
+                height: 1em
+                background-color: hsl(0, 80%, 90%)
+                border-radius: 1em
+                filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.5))
+                border: 1px solid $color-border
+                margin-right: 0.25em
+                transition: 100ms ease-in-out
+
+              &::after
+                display: flex
+                justify-content: center
+                align-items: center
+                color: hsl(0, 80%, 90%)
+                position: absolute
+                left: 0
+                content: "\2715"
+                width: 1.5em
+                height: 1.5em
+                background-color: hsl(0, 80%, 60%)
+                border-radius: 1em
+                filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.5))
+                border: 1px solid $color-border
+                transition: 100ms ease-in-out
+
+            &:checked + label
+              &::before
+                background-color: hsl(100, 80%, 90%)
+
+              &::after
+                content: "\2713"
+                color: hsl(100, 80%, 90%)
+                left: 1em
+                background-color: hsl(100, 80%, 40%)
+
+          .slider
+            display: grid
+            grid-template-columns: auto auto auto 1fr auto
+            grid-template-rows: 1fr
+            align-items: center
+            grid-auto-flow: column
+            direction: ltr
+            justify-items: start
+            justify-content: start
+            column-gap: 10px
+            text-align: center
+
+            .inner
+              position: relative
+              width: 100%
+              display: grid
+              grid-template-columns: auto 1fr
+              grid-template-rows: 1fr
+              align-items: center
+              grid-auto-flow: column
+              direction: ltr
+              justify-items: start
+              justify-content: start
+              column-gap: 0px
+              text-align: center
+
+              span
+                &::before
+                  position: absolute
+                  background: $color-red
+                  width: 16px
+                  height: 16px
+                  border-radius: 16px
+                  content: " "
+                  top: 2.5px
+                  left: 0em
+
+                &::after
+                  position: absolute
+                  background: $color-green
+                  width: 16px
+                  height: 16px
+                  border-radius: 16px
+                  content: " "
+                  top: 2.5px
+                  right: 0em
+
+              input[type=range]
+                z-index: 1
+                -webkit-appearance: none
+                width: 100%
+                background: transparent
+
+                &::-webkit-slider-thumb
+                &::-moz-range-thumb
+                  -webkit-appearance: none
+                  background: white
+                  width: 16px
+                  height: 30px
+                  border-radius: 5px
+
+                &:focus
+                  outline: none
+
+                &::-ms-track
+                &::-moz-range-track
+                  width: 100%
+                  cursor: pointer
+
+                  box-shadow: none
+                  outline: none
+                  border: none
+                  background: linear-gradient(90deg, $color-red 0%, $color-green 100%)
+                  color: transparent
+
+          .label
+            @include default()
+            height: 30px
+            line-height: 30px
+
+            &.text
+              width: 150px
+
+            &.number
+              width: 50px
+
+            span
+              font-family: Inter
+              font-weight: 400
+              font-size: 16px
+              display: inline-block
+              line-height: normal
+
+          .checkbox
+            display: grid
+            grid-template-columns: auto 1fr
+            grid-template-rows: 1fr
+            align-items: center
+            grid-auto-flow: column
+            direction: ltr
+            justify-items: start
+            justify-content: start
+            column-gap: 10px
+            text-align: center
+
+          .color
+
+  .footer
+
+.chromatic-canvas-window
+  @include default()
+  background: #00000080 !important
+  justify-content: space-between
+  font-family: Inter
+  color: $color-text !important
+  .window-header
+    justify-content: space-between
+    align-items: center
+    max-height: 45px
+    min-height: 45px
+    height: 50px
+    padding-left: 15px
+    padding-right: 15px
+    border-bottom: none !important
+
+  .window-content
+    @include modern
+    border-top: none !important
+    padding: 0px !important
+
+  h4
+    font-weight: 900 !important
+    font-size: 20px
+    flex: 0 0 auto
+
+  a
+    font-size: 24px
+    flex: 0 0 auto

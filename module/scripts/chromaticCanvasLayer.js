@@ -13,6 +13,7 @@
 // ? copies of Kandashi's Fluid Canvas, some are improved versions, some got
 // ? created from 0 but using Kandashi's work as reference :D.
 import { Constants as C } from "./constants.js";
+import anime from "../dependencies/anime.es.js";
 
 export class ChromaticCanvasLayer extends InteractionLayer {
   constructor() {
@@ -33,9 +34,9 @@ export class ChromaticCanvasLayer extends InteractionLayer {
 
   async _draw(options) {}
 
-  ////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   // Shakes the target
-  ////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   static shake(options) {
     // Debug
     C.D.info('ChromaticCanvasLayer.shake()');
@@ -44,27 +45,39 @@ export class ChromaticCanvasLayer extends InteractionLayer {
     const b = 2 * options.intensity;
     const c = 3 * options.intensity;
 
-    document.getElementById(options.target).animate([
-      { transform: `translate(${a}px, ${a}px) rotate(0deg)` },
-      { transform: `translate(-${a}px, -${b}px) rotate(-${a}deg)` },
-      { transform: `translate(-${c}px, 0px) rotate(${a}deg)` },
-      { transform: `translate(${c}px, ${b}px) rotate(0deg)` },
-      { transform: `translate(${a}px, -${a}px) rotate(${a}deg)` },
-      { transform: `translate(-${a}px, ${b}px) rotate(-${a}deg)` },
-      { transform: `translate(-${c}px, ${a}px) rotate(0deg)` },
-      { transform: `translate(${c}px, ${a}px) rotate(-${a}deg)` },
-      { transform: `translate(-${a}px, -${a}px) rotate(${a}deg)` },
-      { transform: `translate(${a}px, ${b}px) rotate(0deg)` },
-      { transform: `translate(${a}px, -${b}px) rotate(-${a}deg)` }
-    ], {
+    let iterations = 0;
+    anime({
+      targets: `#${options.target}`,
+      keyframes: [
+        { translateX:  a, translateY:  a, rotate:  0 },
+        { translateX: -a, translateY: -b, rotate: -a },
+        { translateX: -c, translateY: -b, rotate:  a },
+        { translateX:  c, translateY:  b, rotate:  0 },
+        { translateX:  a, translateY: -a, rotate:  a },
+        { translateX:  a, translateY:  b, rotate: -a },
+        { translateX: -c, translateY:  a, rotate:  0 },
+        { translateX:  c, translateY:  a, rotate: -a },
+        { translateX: -a, translateY: -a, rotate:  a },
+        { translateX:  a, translateY:  b, rotate:  0 },
+        { translateX:  a, translateY: -b, rotate: -a },
+      ],
       duration: options.duration,
-      iterations: options.iterations,
+      begin: function (anim) {
+        iterations++;
+      },
+      complete: function (anim) {
+        if (iterations < options.iterations) {
+          anim.restart();
+        } else {
+          anim.reset();
+        }
+      },
     });
   }
 
-  ////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   // Pulsates the target
-  ////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   static pulsate(options) {
     // Debug
     C.D.info('ChromaticCanvasLayer.pulsate()');
@@ -72,39 +85,72 @@ export class ChromaticCanvasLayer extends InteractionLayer {
     const a = options.intensity > 1 ? 1.2 : options.intensity < 1 ? 1.05 : 1.1;
     const b = options.intensity > 1 ? 1.1 : options.intensity < 1 ? 1.025 : 1.05;
 
-    document.getElementById(options.target).animate([
-      { transform: `scale(1)` },
-      { transform: `scale(${a})` },
-      { transform: `scale(1)` },
-      { transform: `scale(${b})` },
-      { transform: `scale(1)` }
-    ], {
+    let iterations = 0;
+    anime({
+      targets: `#${options.target}`,
+      keyframes: [
+        { scale: a },
+        { scale: b },
+      ],
       duration: options.duration,
-      iterations: options.iterations,
-      ease: "ease",
+      begin: function (anim) {
+        iterations++;
+      },
+      complete: function (anim) {
+        if (iterations < options.iterations) {
+          anim.restart();
+        } else {
+          anim.reset();
+        }
+      },
     });
+
+    //document.getElementById(options.target).animate([
+    //  { transform: `scale(1)` },
+    //  { transform: `scale(${a})` },
+    //  { transform: `scale(1)` },
+    //  { transform: `scale(${b})` },
+    //  { transform: `scale(1)` }
+    //], {
+    //  duration: options.duration,
+    //  iterations: options.iterations,
+    //  ease: "ease",
+    //});
   }
 
-  ////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   // Spins the target
-  ////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   static spin(options) {
     // Debug
     C.D.info('ChromaticCanvasLayer.spin()');
 
-    document.getElementById(options.target).animate([
-      { transform: `rotate(0deg)` },
-      { transform: `rotate(360deg)` },
-    ], {
-      duration: options.duration / options.intensity,
-      iterations: options.iterations,
-      ease: "ease"
+    let iterations = 0;
+    anime({
+      targets: `#${options.target}`,
+      keyframes: [
+        { rotate: 360 * options.iterations },
+      ],
+      easing: 'easeInOutQuad',
+      duration: options.duration,
+      complete: function (anim) {
+        anim.reset();
+      },
     });
+
+    //document.getElementById(options.target).animate([
+    //  { transform: `rotate(0deg)` },
+    //  { transform: `rotate(360deg)` },
+    //], {
+    //  duration: options.duration / options.intensity,
+    //  iterations: options.iterations,
+    //  ease: "ease"
+    //});
   }
 
-  ////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   // Applies hyper coloring to the target
-  ////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   static hyperColor(options) {
     // Debug
     C.D.info('ChromaticCanvasLayer.hyperColor()');
@@ -142,6 +188,21 @@ export class ChromaticCanvasLayer extends InteractionLayer {
           ease: 'ease',
         })
       })
+    })
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Playground for testing
+  //////////////////////////////////////////////////////////////////////////////
+  static playground(options) {
+    // Debug
+    C.D.info('ChromaticCanvasLayer.playground()');
+
+    const target = document.getElementById(options.target);
+
+    anime({
+      targets: target,
+      translateX: 250,
     })
   }
 }

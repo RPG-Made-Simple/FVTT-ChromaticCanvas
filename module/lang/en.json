@@ -1,18 +1,23 @@
 {
-    "chromatic-canvas": {
-        "tool": {
-            "shake": {
-                "title": "Shake"
-            },
-            "pulsate": {
-                "title": "Pulsate"
-            },
-            "spin": {
-                "title": "Spin"
-            },
-            "hyper-color": {
-                "title": "Hyper Color"
-            }
-        }
+  "chromatic-canvas": {
+    "tool": {
+      "shake": {
+        "title": "Shake"
+      },
+      "pulsate": {
+        "title": "Pulsate"
+      },
+      "spin": {
+        "title": "Spin"
+      },
+      "hyper-color": {
+        "title": "Hyper Color"
+      }
+    },
+    "window": {
+      "canvas-effects": {
+        "title": "Canvas Effects"
+      }
     }
+  }
 }

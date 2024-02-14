@@ -12,6 +12,8 @@
 import { Constants as C } from "./constants.js";
 import { ChromaticCanvas } from "./chromaticCanvas.js";
 import { ChromaticCanvasLayer } from "./chromaticCanvasLayer.js";
+import { CanvasEffectsWindow } from "./canvasEffectsWindow.js";
+import { EffectsDatabase } from "./effectsDatabase.js";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Entry-point for everything
@@ -44,6 +46,12 @@ Hooks.once('init', () => {
       hyperColor: (options) => {
         ChromaticCanvas.dispatch('hyperColor', options);
       },
+
+      playground: (options) => {
+        ChromaticCanvas.dispatch('playground', options);
+      },
+
+      effects: EffectsDatabase,
     }
 
     Hooks.call('chromatic-canvas.ready');
@@ -60,13 +68,32 @@ Hooks.once('init', () => {
 
   // Setup the layer where the effects will be played
   CONFIG.Canvas.layers['chromaticCanvas'] = {
-    group: 'interface',
+    group: 'primary',
     layerClass: ChromaticCanvasLayer,
   }
 
   // Setup listener for the module tools
   Hooks.on('getSceneControlButtons', (controls) => {
     if (!canvas.scene) return;
+
+    let starredTools = [];
+    for (const starred of ChromaticCanvas.StarredEffects) {
+      const effect = EffectsDatabase[starred];
+      starredTools.push({
+        name: effect.id,
+        title: effect.name,
+        icon: `fas ${effect.icon}`,
+        onClick: (active) => {
+          if (active) {
+            effect.play();
+          } else {
+            effect.stop();
+          }
+        },
+        toggle: true,
+        active: effect.enabled,
+      })
+    }
 
     const shakeTool = {
       name: 'shake',
@@ -132,6 +159,19 @@ Hooks.once('init', () => {
       button: true,
     }
 
+    const canvasEffectsTool = {
+      name: 'canvas-effects',
+      title: game.i18n.localize('chromatic-canvas.window.canvas-effects.title'),
+      icon: 'fas fa-browser',
+      onClick: async () => {
+        new CanvasEffectsWindow().render(true, {
+          width: 600,
+          height: 720,
+        });
+      },
+      button: true,
+    }
+
     controls.push({
       name: C.ID,
       title: C.NAME_FLAT,
@@ -139,10 +179,12 @@ Hooks.once('init', () => {
       icon: 'fas fa-panorama',
       visible: game.user.isGM,
       tools: [
+        ...starredTools,
         shakeTool,
         pulsateTool,
         spinTool,
         colorFringingTool,
+        canvasEffectsTool,
       ]
     });
   });
@@ -157,4 +199,5 @@ Hooks.once('socketlib.ready', () =>
   C.SOCKET.register('pulsate', ChromaticCanvasLayer.pulsate);
   C.SOCKET.register('spin', ChromaticCanvasLayer.spin);
   C.SOCKET.register('hyperColor', ChromaticCanvasLayer.hyperColor);
+  C.SOCKET.register('playground', ChromaticCanvasLayer.playground);
 })

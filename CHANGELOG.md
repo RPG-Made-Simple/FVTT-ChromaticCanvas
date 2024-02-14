@@ -1,9 +1,20 @@
 # 🎴 Chromatic Canvas Changelog
 
-## Version 1.3.0
+## Version 2.0.0
 
-- *Internak* - Removed `module/branding/title.png` since it was a duplicate of `branding/title.png`
+- *Internal* - Added [`anime.js`](https://github.com/juliangarnier/anime) to included dependencies.
+- *Internal* - Added [`pixi-filters.js`](https://github.com/pixijs/filters) to included dependencies.
+- *Internal* - Animations got a rework, they are way more fluid now.
+- *Internal* - Removed `module/branding/title.png` since it was a duplicate of `branding/title.png`.
 - *Internal* - Changed indentation from `4` spaces to `2`.
+- *Effect* - Added [`blur`()]().
+- *Effect* - Added [`dot()`]().
+- *Effect* - Added [`ascii()`]().
+- *Effect* - Added [`gray()`]().
+- *Effect* - Added [`oldFilm()`]().
+- *Effect* - Added [`emboss()`]().
+- *Effect* - Added [`pixelate()`]().
+- *Interface* - Added an effect manager.
 
 ## Version 1.2.0
 

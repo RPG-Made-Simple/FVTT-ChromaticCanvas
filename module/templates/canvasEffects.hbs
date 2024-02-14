@@ -1,0 +1,63 @@
+{{log this}}
+<form class="chromatic-canvas">
+  <div class="header">
+
+  </div>
+  <div class="body">
+    {{#each effects}}
+    <div class="effect">
+      <div class="header">
+        <a class="expand on" data-id="{{id}}">
+          <i class="fas fa-caret-down"></i>
+        </a>
+        <span>{{name}}</span>
+        <a class="star off" data-id="{{id}}">
+          <i class="fas fa-star"></i>
+        </a>
+      </div>
+      <div class="content on">
+        {{#each attributes}}
+        {{#if (eq type "number")}}
+        <div class="attribute">
+          <div class="slider">
+            <div>
+              <input type="checkbox" class="toggle" id="{{../id}}-{{path}}">
+              <label for="{{../id}}-{{path}}"></label>
+            </div>
+            <div class="label text">
+              <span>{{path}}</span>
+            </div>
+            <div class="label number">
+              <span>{{start}}</span>
+            </div>
+            <div class="inner">
+              <span></span><input type="range" value="0" step="0.1" min="{{start}}" max="{{end}}">
+            </div>
+            <div class="label number">
+              <span>{{end}}</span>
+            </div>
+          </div>
+        </div>
+        {{/if}}
+        {{#if (eq type "toggle")}}
+        <div class="attribute">
+          <div class="checkbox">
+            <div>
+              <input type="checkbox" class="toggle" id="{{../id}}-{{path}}">
+              <label for="{{../id}}-{{path}}"></label>
+            </div>
+            <div class="label text">
+              <span>{{path}}</span>
+            </div>
+          </div>
+        </div>
+        {{/if}}
+        {{/each}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  <div class="footer">
+
+  </div>
+</form>
